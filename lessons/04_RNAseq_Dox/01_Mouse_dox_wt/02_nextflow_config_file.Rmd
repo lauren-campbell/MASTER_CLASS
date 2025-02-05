@@ -44,5 +44,19 @@ process {
 }
 ```
 
+#Total Code
+```{bash}
+process {
+executor='slurm'
+queue='short'
+memory='16 GB'
+maxForks=10
+}
+```
+#File Path to remember 
+/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS
+
+#Nano path 
+/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/04_RNAseq_Dox/01_Mouse_dox_wt/dox_long
 
 # Ok that's the .config file (a requirement) Now let's move onto the shell script to run all this !!
