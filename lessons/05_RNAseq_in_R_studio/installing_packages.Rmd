@@ -7,72 +7,48 @@ editor_options:
   chunk_output_type: console
 ---
 
-# R Packages
+# CRAN Repository Download - comprehensive R archive network
+```{r setup, include=FALSE}
+install.package("tidyverse") #install a package
+install.package("dplyr")
+install.package("IRanges")
+install.package("ggplot2")
+install.package("purrr")
+install.package("readr")
+install.package("tibble")
+install.package("tidyr")
+```
+
+# Load Packages
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(IRanges)
+library(tidyverse) #clean, logical and readable coding
 library(dplyr)
-
-library(tidyr)
-library(tibble)
-library(readr)
+library(IRanges)
 library(ggplot2)
 library(purrr)
+library(readr)
+library(tibble)
+library(tidyr)
 library(magrittr)
 library(pheatmap)
 library(textshape)
 library(Rcpp)
 library(matrixStats)
-library(rtracklayer)
 ```
 
-# Tidyverse
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
-
-
-library(IRanges)
-library(dplyr)
-
-library(tidyr)
-library(tibble)
-library(readr)
-library(ggplot2)
-library(purrr)
-library(magrittr)
-library(pheatmap)
-library(textshape)
-library(Rcpp)
-library(matrixStats)
-library(rtracklayer)
-```
-
-#Bioconductor
-
+# Bioconductor Repository Download (v 3.18) - Geared to Bioinformatics
 ```{r setup, include=FALSE}
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install(version = "3.18")
+BiocManager::install(version = "3.18") #change version
+
+BiocManager::install("rtracklayer") #install package
 ```
 
-#Packages
-
+# Load Packages
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(IRanges)
-library(dplyr)
-
-library(tidyr)
-library(tibble)
-library(readr)
-library(ggplot2)
-library(purrr)
-library(magrittr)
-library(pheatmap)
-library(textshape)
-library(Rcpp)
-library(matrixStats)
+library(DESeq2)
 library(rtracklayer)
 ```
