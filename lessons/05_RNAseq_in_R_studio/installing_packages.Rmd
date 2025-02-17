@@ -7,6 +7,37 @@ editor_options:
   chunk_output_type: console
 ---
 
+#Setting up R Pro
+
+**On Fiji** 
+1) Create a new directory for workflow and version control
+    mkdir ~/R/<Directory_Name> 
+    posit_libs -> R profile
+    x86_64-pc-linux-gnu-library --> .Renviron info
+    
+2) Create a .Renviron and .Rprofile in our home directory.
+.Renviron = Contains the devtoolset-10 line appended to your PATH
+    nano .Renviron
+      PATH=/opt/rh/devtoolset-10/root/bin:/usr/bin:$PATH
+.Rprofile = Directory for workflow & version control 
+    nano .Rprofile
+      .libPaths(c("/Users/laca6459/R/Posit_libs", "/opt/R/4.3.1/lib/R/library/", .libPaths()))
+
+**Launching R Studio Pro**
+1) Request the Small resource profile (4 CPUs and 32GB RAM)
+2) Queue can either be "sandbox" or "highmem"
+
+**On R Studio Pro**
+1) Assign library directory created to .Rprofile
+
+      
+#Curl - Newest version not supported aka potential source of error
+```{r setup, include=FALSE}
+install.packages("remotes")
+library(remotes)
+install_version("curl", "5.2.3") #Needed to set ___ to a different version in order for it to flow correctly. 
+```
+
 # CRAN Repository Download - comprehensive R archive network
 ```{r setup, include=FALSE}
 install.package("tidyverse") #install a package
@@ -23,18 +54,17 @@ install.package("tidyr")
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse) #clean, logical and readable coding
-library(dplyr)
-library(IRanges)
-library(ggplot2)
-library(purrr)
-library(readr)
-library(tibble)
-library(tidyr)
-library(magrittr)
-library(pheatmap)
-library(textshape)
-library(Rcpp)
-library(matrixStats)
+library(dplyr) #Grammar of Data Manipulation
+library(ggplot2) #Customize Plots, color is a vector so you can scale graphs big
+library(purrr) #Enhances R's programming functions
+library(readr) #Read csv and tsv 
+library(tibble) #Reshaping data frame
+library(tidyr) #Convert between long and wide data frames
+library(magrittr) #Used for pipe functions
+library(pheatmap) #Makes pretty heat maps
+library(textshape) #Shape text on a plot
+library(Rcpp) #Integration of R and C++
+library(matrixStats) #Take matrix tables to use for stats
 ```
 
 # Bioconductor Repository Download (v 3.18) - Geared to Bioinformatics
@@ -49,6 +79,7 @@ BiocManager::install("rtracklayer") #install package
 # Load Packages
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(DESeq2)
-library(rtracklayer)
+library(DESeq2) #Differential Gene Expression Data based on negative bionomial distributions
+library(IRanges) #Integer range manipulation
+library(rtracklayer) #Interface to Genome Annotation and Genome Browsers
 ```
