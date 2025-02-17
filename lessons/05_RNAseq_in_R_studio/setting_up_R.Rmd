@@ -1,5 +1,5 @@
 ---
-title: "installing_packages"
+title: "setting_up_R"
 author: "LC"
 date: "`r Sys.Date()`"
 output: html_document
@@ -30,7 +30,6 @@ editor_options:
 **On R Studio Pro**
 1) Assign library directory created to .Rprofile
 
-      
 #Curl - Newest version not supported aka potential source of error
 ```{r setup, include=FALSE}
 install.packages("remotes")
