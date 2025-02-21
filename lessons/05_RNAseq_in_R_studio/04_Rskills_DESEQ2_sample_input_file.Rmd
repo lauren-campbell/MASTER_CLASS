@@ -23,10 +23,13 @@ So all we need for DESEQ2 is input counts and colData. We already got our counts
 load("results/count_files.RData", verbose = T)
 
 #IMPORTANT Raw counts file
-counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/04_RNAseq_Dox/01_Mouse_dox_wt/good_class_RNAseq/pipeline_output/star_salmon/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
+counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/data/salmon.merged.gene_counts.tsv", #File Path to Data
+                          header = TRUE, # Has header
+                          row.names = 1) # Collum number w names
+
 
 # Remove gene name column
-counts_matrix <-counts_matrix %>% 
+counts_matrix <- counts_matrix %>% 
   select(-"gene_name") 
 View(counts_matrix)
 
@@ -78,23 +81,11 @@ time_values <- sapply(split_values, function(x) x[[2]])
 # NOTE indexing the function of x, which number from the split to a specific number with [[ ]]
 replicate_values <- sapply(split_values, function(x) x[[3]])
 
-# Ok now we can do more indexing and make more columns in our deseq_samples dataframe!
-# The $ can allow you to index into a specific column or even create a new one.
-# so we are making a new column by adding $time_point onto deseq_sample. 
-# Then we fill this column by using the assignment operator to place time points in
-deseq_samples$time_point <- time_values
+deseq_samples$time_point <- time_values #Add column for time points
 
-# let's take a look:
+deseq_samples$replicate <- replicate_values #Add column for replicate
+
 View(deseq_samples)
-
-# Now let's add another column for replicate
-deseq_samples$replicate <- replicate_values
-
-# let's take a look:
-View(deseq_samples)
-
-# Again note the "meta" nature of row and col names
-
 ```
 # Nice we just created an index for DESEQ2 to figure out which sample is which!
 The dataframe "deseq_samples" will now be used as required input into DESEQ2
