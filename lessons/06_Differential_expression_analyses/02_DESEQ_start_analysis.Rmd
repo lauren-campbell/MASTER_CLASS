@@ -25,9 +25,9 @@ load("../05_RNAseq_in_R_studio/results/count_files.RData", verbose = T)
 load("../05_RNAseq_in_R_studio/results/deseq_samples.RData", verbose = T)
 ```
 
-# Long mouse dox time course DDS
+# 1) DESeq2 on Long Mouse Dox Time Course DDS
 ```{r run DESEQ2}
-# create DDS
+# Create DDS
 mouse_long_dox_dds <- DESeqDataSetFromMatrix(countData = counts_filtered,
                                                  colData = deseq_samples,
                                                  design = ~ time_point)
@@ -35,29 +35,21 @@ mouse_long_dox_dds <- DESeqDataSetFromMatrix(countData = counts_filtered,
 
 # Run DESEQ2 on DDS
 mouse_long_dox_dds <- DESeq(mouse_long_dox_dds)
-```
 
-# Let's look at the results
-```{r result names from DESEQ2}
-
+# View Results
 resultsNames(mouse_long_dox_dds)
-
-# Cool, we see a bunch of results of time_point_X_vs_0 
-# Those are our results !
-# We just don't want the intercept file
 ```
 
-# Now let;s make result files for 0 hours versus 12 hours 
-The goal is to learn some key concepts from DESEQ2 results() function
-Then we will move on to comparing across all time points.
-But first let's get down to some fundamental analyses.
+# 2) Extracts Results from DDS -{0 v 12 hrs}
+
+results( extract the results of
+  <name of dds to analyze>,
+  contrast = c("time_point", "12", "0") specifies that you want to compare the "12" level of the "time_point" factor against the "0" level.
+
+view
+
 
 ```{r extracting results from DDS}
-# fist let's see how results work
-# contrast = c("time_point", "12", "0") specifies that you want to compare 
-# the "12" level of the "time_point" factor against the "0" level. 
-# Antoher reason why factoring our DESEQsamples file is importnat
-
 res_0 <- results(mouse_long_dox_dds, contrast = c("time_point", "12", "0"))
 view(res_0)
 
@@ -71,7 +63,9 @@ view(res_0)
 "0" is the reference level of the factor (i.e., the baseline).
 
 
-# res_0 is an S4 object and abit confusing let's turn into a data frame:
+# 3) Turn res_0 into a Data Frame
+res_0 is a S4 object and abit confusing let's turn into a data frame:
+
 ```{r making a dataframe of our results}
 res_0_df <- data.frame(time = 12, res_0)
 view(res_0_df)
@@ -84,17 +78,19 @@ res_0_df <- rownames_to_column(res_0_df, "gene_id")
 view(res_0_df)
 ```
 
-# We can notice that there are NAs in the padj column let's see how many with is.na() function
+# 4) Addressing NAs
+
+sum(is.na( //counting NAs
+  <DataFrame>$<ColumnName>))
+  
+We can notice that there are NAs in the padj column let's see how many with is.na() function
+
 ```{r checking NAs}
+sum(is.na(res_0_df$padj)) # counting NAs
 
-# counting NAs
-sum(is.na(res_0_df$padj))
+nrow(res_0_df) # How many genes in DF
 
-# How many genes in DF
-nrow(res_0_df)
-
-# what percentage
-sum(is.na(res_0_df$padj)) / nrow(res_0_df)
+sum(is.na(res_0_df$padj)) / nrow(res_0_df) # what percentage
 
 # Yikes half our genes have NA for padj - let's deal with that later 
 # In the meantime is.na is really important way to check your data 
@@ -103,15 +99,21 @@ sum(is.na(res_0_df$padj)) / nrow(res_0_df)
 ```
 
 
-# Cool, now let's merge in the g2s to get the gene names
-We made a g2s and this is where it comes in handy !
+# 5) Merge in the Gene Names (g2s)
+
+merge(<dds results>,
+  <gene names>,
+  by = c("merege based on" = "))
+  
+
 ```{r merge in gene_name}
 # we need to merge g2s and res_0_df with a column that exists in both DFs = gene_id
 
 res_0_df <- merge(res_0_df, g2s, by = c("gene_id" = "gene_id"))
 view(res_0_df)
+
 # Or we could use left join or join 
-res_0_df <- left_join(res_0_df, g2s)
+res_0_df <- left_join(res_0_df, g2s) 
 view(res_0_df)
 # Let's orgnaize this so the gene name is next to gene_id
 res_0_df <- res_0_df[, c(1, 9, 2:8)]
@@ -121,9 +123,17 @@ view(res_0_df)
 
 ```
 
-# Now let's practice filtering this data frame on padj adn lfcSE
-This is a good opportunity to learn some tidyverse with the pipe
-%>% function
+# 6) Filter Data Based on Significance
+
+padj = adjusted p value
+log2FoldChange = effect size
+
+<assign df> %>%
+
+
+Now let's practice filtering this data frame on padj adn lfcSE
+This is a good opportunity to learn some tidyverse with the pipe %>% function
+
 ```{r filtering our results to significant Padj < 0.05}
 
 # filter() function for padj
@@ -137,7 +147,7 @@ nrow(filtered_res_0_df)
 # let's filter on both padj and log2FoldChange
 # these arguments are simply added by a , and could have even more !
 filtered_res_0_df_2 <- res_0_df %>%
-  filter(padj < 0.05, abs(log2FoldChange) > 1)
+  filter(padj < 0.05, abs(log2FoldChange) > 1) #Filter genes that have a significant change and change by a 2 fold
 
 nrow(filtered_res_0_df_2)
 
@@ -153,7 +163,8 @@ We can extract the gene names and then do gene ontology
 ```{r extracting sig genes at P <0.05 and LFC > abs(1)}
 
 # printing out the gene_symbol column 
-cool_genes <- cat(paste(filtered_res_0_df_2$gene_symbol, collapse = "\n"))
+#Concatinate, paste, df$gene_symbol, put a new line after each one,
+cool_genes <- cat(paste(filtered_res_0_df_2$gene_name, collapse = "\n"))
 
 cool_genes_12 <- as.data.frame(filtered_res_0_df_2$gene_symbol, collapse = "\n")
 

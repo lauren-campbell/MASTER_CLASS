@@ -36,58 +36,48 @@ https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DES
 # Let's start by loading in our counts_matrix and sample info
 # IMPORTANT: careful of order when loading Rdata :)
 ```{r loading in counts and sample info}
-
-# /scratch/Shares/rinnclass/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/results
 load("../05_RNAseq_in_R_studio/results/deseq_samples.RData", verbose = T)
-
-# NOte the write over for counts matrix and ordering of loading these two objects
 load("../05_RNAseq_in_R_studio/results/count_files.RData", verbose = T)
-
 ```
 
-# (1) first run DESeq2 by creating a dds (DESEQ Data Structure) 
-We use the function "DESeqDataSetFromMatrix"
-With parameters of countData, colData, design
+#DESeq: Tests for Differential Expression of Genes in RNASeq Data based on a negative binomial model
 
-dds <- DESeqDataSetFromMatrix(countData = counts_filtered,
-                              # this is our counts data we read in
-                              colData = desseq_samples,
-                              # telling DeSeq what env variable to use for sample sheet
-                              design = ~ condition)
-                              # perhaps most important is "condition" is a factor in deseq_samples
-                              # we will be using time_point
-                              
-# Ok let's make a dds !
+# 1) Prepare for DESeq2 by creating a dds (DESEQ Data Structure) 
 
+DESeqDataSetFromMatrix = Create a DESeq Data Set from Matrix w these parameters
+  countData = selects count data to read in  // counts_filtered
+      ** DESeq requires all the integers to be rounded ** 
+  colData = what env variable to use for the sample sheet // deseq_samples
+  design = _(what does ~ do)_ condition to factor   //timepoint
+  
 ```{r run DEseqDataSetFromMatrix }
-
 dds <- DESeqDataSetFromMatrix(countData = counts_filtered,
                               colData = deseq_samples,
                               design = ~ time_point)
 ```
 
-# Now run DESeq function that does all the magic !
+# 2) Run DESeq
+run DESeq on dds data frame and save to dds
+
 ```{r run DEseqDataSetFromMatrix }
-
 dds <- DESeq(dds)
-
 ```
 
-# Not only was that fast but numerous analyses were just performed !
-Let's take a look at the result outputs
-Important: to see which analyses DESEQ2 performed 
+# 3) Differential Expression Results
+
+resultsNames = retrieves names of results
+  dds = where from
+[output] = what analyses DESeq2 Performed
 
 ```{r results}
+resultsNames(dds) # resultsNames: retrieves names of results
 
-# resultsNames function retreives names of results
-resultsNames(dds)
 
 # Nice we see this output:
 # "Intercept" "time_point_12_vs_0" "time_point_24_vs_0" "time_point_48_vs_0" "time_point_96_vs_0"
-# DESEQ found genes differnetial expresion values for each time point relative to 0 time point.
-
-
+# DESEQ found genes differential expression values for each time point relative to 0 time point.
 ```
+
 # RESULT: we have compared gene expression values relative to 0 timepoint.
 It is good to start making a notation of results you wan to keep track of.
 In this case it is key to record what analysis was done.
