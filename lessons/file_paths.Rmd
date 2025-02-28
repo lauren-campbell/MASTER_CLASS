@@ -1,0 +1,39 @@
+---
+title: "File_Paths"
+author: "LC"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Saving Data
+
+```{r}
+save(<df1 name>, <df2 name>, <df3 name>, file = "/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/<folder>/<file name>.Rdata")
+
+```
+
+
+## Raw Counts Matrix
+```{r}
+counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/data/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
+```
+
+## DESeq Sample Sheet
+```{r}
+summary(cars)
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/results/deseq_samples.RData")
+```
+
+## Time Point Results Data Frame
+```{r}
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/time_point_res_df.RData")
+```
+## DDS Time Point Mouse Long
+
+```{r pressure, echo=FALSE}
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/dds_time_point_mouse_long.RData")
+```

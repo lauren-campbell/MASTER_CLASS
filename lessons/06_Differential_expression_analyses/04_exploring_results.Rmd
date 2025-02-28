@@ -27,7 +27,7 @@ We now have results after all that hardwork - let's see what we see and start to
 
 # Loading our results from DESEQ for all time points
 ```{r loading our DESEQ2 results res_df}
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/time_point_res_df.RData")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/time_point_res_df.RData")
 ```
 
 
@@ -53,6 +53,7 @@ filtered_res_df_2 <- filtered_res_df %>%
 ```
 
 # How many unique genes does this represent?
+Removes replicates and only reports a value 1 time
 ```{r how many unique genes are in the significant results df?}
 
 sig_genes <- unique(filtered_res_df_2$gene_id)
@@ -152,7 +153,7 @@ t.test(res_df$baseMean, filtered_res_df_2$baseMean)
 
 ```
 # Result: The dox response genes have a higher basemean than all genes
-# Result: P = 0.4, FC = (33/0.2)
+# Result: P = 0.04, FC = (33/0.2)
 
 
 Everything is looking good so a common next step is to 
@@ -165,7 +166,7 @@ as indexing and something we will do A LOT of :)
 ```{r meging counts with our sig genes - so we have counts table for all sig genes}
 
 # First we need to load our counts matrix
-counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/04_RNAseq_Dox/01_Mouse_dox_wt/good_class_RNAseq/pipeline_output/star_salmon/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
+counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/data/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
 
 # Let's make sure our counts file is the right format
 view(counts_matrix)

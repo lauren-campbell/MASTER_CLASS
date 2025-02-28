@@ -21,7 +21,7 @@ library(ggplot2)
 ```{r loading counts objects}
 
 #IMPORTANT Raw counts file
-counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/04_RNAseq_Dox/01_Mouse_dox_wt/good_class_RNAseq/pipeline_output/star_salmon/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
+counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/data/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
 
 ```
 
@@ -74,8 +74,6 @@ deseq_samples$replicate <- factor(deseq_samples$replicate)
 
 # 4) Make sure rows and columns are ordered for analysis
 ```{r checking that sample sheet and counts match rows and cols respectively}
-
-
 # Check ordering
   stopifnot(all(colnames(counts_integer) == rownames(deseq_samples$sample_id)))
 
@@ -86,7 +84,6 @@ deseq_samples$replicate <- factor(deseq_samples$replicate)
 
 # 4) Run Deseq Model (time_point)
 ```{r run DESEQ2}
-
 dds_time_point <- DESeqDataSetFromMatrix(countData = counts_integer,
                               colData = deseq_samples,
                               design = ~ time_point)
