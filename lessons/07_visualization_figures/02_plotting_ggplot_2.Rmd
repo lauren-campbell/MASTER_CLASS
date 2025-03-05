@@ -20,10 +20,10 @@ library(broom)
 ```{r loading our RNAseq analysis data TPM & COUNTS}
 
 # load TPM RESULTS: 
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_results/TPM_results.Rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_Results/TPM_results.Rdata")
 
 # laod DESEQ2 results
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
 
 ```
 
@@ -109,15 +109,6 @@ ggplot(filtered_res_df, aes(x = padj,
 Above we just plotted the lines on top of data. But now let's 
 get the actual values of the linear regression fits! 
 ```{r linear model data}
-
-ggplot(filtered_res_df, aes(x = padj, 
-                 y = pvalue)) +
-  geom_point()+
-  geom_abline(slope = 1, intercept = 0) +
-  geom_smooth(method = "lm")
-
-# We just need to pick to variables and find the regression between them
-# To do this we use the function "lm" and assign values to it 
 
 lm_fit <- lm(filtered_res_df$padj ~ filtered_res_df$pvalue)
 

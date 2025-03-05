@@ -37,3 +37,9 @@ load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/less
 ```{r pressure, echo=FALSE}
 load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/dds_time_point_mouse_long.RData")
 ```
+
+##DESEQ Results
+
+```{r}
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
+```
