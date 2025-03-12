@@ -11,6 +11,7 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 #install.packages("reshape")
 library(reshape)
+library(tidyverse)
 library(tidyr)
 library(tibble)
 library(ggplot2)
@@ -35,20 +36,15 @@ So take all of this with a grain of salt but is good to measure relative changes
 ```{r loading our RNAseq analysis data TPM & COUNTS}
 
 # load TPM RESULTS: 
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_results/TPM_results.Rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/works/TPM_results/TPM_results.Rdata")
 
 # laod DESEQ2 results
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/works/counts_results_DESEQ/DESEQ_results.rdata")
 
 ```
 
 # First let's revisit the distribution of values for TPM 
 ```{r hist TPM values}
-# Previously we plotted TPM distribution from our cols labeled:
-# "WT_0_1" etc - note that is not a good idea to name a col by a number :)
-hist(average_and_stddev_values$96_avg)
-# Oh no this doesn't work because of an "integer" value being indexed
-# This can be fixed easily by :
 hist(average_and_stddev_values$'96_avg', xlim = c(0,1000), ylim = c(0,1000), breaks = 1000)
 # We can quickly see again that most values are very low and a long right tail on distribution of TPM values!
 ```
@@ -127,18 +123,18 @@ sig_gene_tpm <- sig_gene_tpm %>%
 ```{r TPM plot of gene of interest}
 
 # Picking a favorite gene
-gene_up <- as.data.frame(c("Gm9045"))
+gene_up <- as.data.frame(c("Gm28438"))
 
 names(gene_up) <- "gene_name"
 
 # indexing to just get values for this gene
-Gm9045_tpm <- sig_gene_tpm[sig_gene_tpm$gene_name %in% gene_up$gene_name, ]
+Gm28438_tpm <- sig_gene_tpm[sig_gene_tpm$gene_name %in% gene_up$gene_name, ]
 
 # now moving the character gene_name to rownames to won't interfere with numeric values
-rownames(Gm9045_tpm) <- Gm9045_tpm$gene_name
+rownames(Gm28438_tpm) <- Gm28438_tpm$gene_name
 
 # removing text column
-Gm9045_tpm <- Gm9045_tpm %>%
+Gm28438_tpm <- Gm28438_tpm %>%
   select(-gene_name) 
 
 # Ok this is typical data wrangling now let's plot !
@@ -154,15 +150,15 @@ We will do that next.
 
 # We now need to futher prepare our data :)
 # Let's get a variable for col names to plot
-avg_cols <- grep("_avg", names(Gm9045_tpm), value = TRUE)
+avg_cols <- grep("_avg", names(Gm28438_tpm), value = TRUE)
 
-sd_cols <- grep("_sd", names(Gm9045_tpm), value = TRUE)
+sd_cols <- grep("_sd", names(Gm28438_tpm), value = TRUE)
 
 # This is another way to "melt" or pivot longer
 plot_df <- data.frame(
   time = as.numeric(gsub("_avg", "", avg_cols)),
-  avg = unlist(Gm9045_tpm[avg_cols]),
-  sd = unlist(Gm9045_tpm[sd_cols])
+  avg = unlist(Gm28438_tpm[avg_cols]),
+  sd = unlist(Gm28438_tpm[sd_cols])
 )
 
 # NOW THE PLOT !
@@ -220,6 +216,7 @@ df_plot_genes$Time <- as.numeric(df_plot_genes$Time)
 df_plot_genes <- df_plot_genes %>% 
   group_by(gene_id, Time) %>% 
   summarise(mean_TPM = mean(TPM), sd_TPM = sd(TPM))
+
 
 # (5) Plot the line plot with error bars
 ggplot(df_plot_genes, aes(x = Time, y = mean_TPM)) +

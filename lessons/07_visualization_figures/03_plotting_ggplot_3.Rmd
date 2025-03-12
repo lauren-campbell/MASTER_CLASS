@@ -19,10 +19,10 @@ library(dplyr)
 # Load data
 ```{r loading our RNAseq analysis data TPM & COUNTS}
 # load TPM RESULTS: 
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_results/TPM_results.Rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_Results/TPM_results.Rdata")
 
 # laod DESEQ2 results
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
 ```
 
 # Summary of where we are at
@@ -50,7 +50,7 @@ Essentially we make as many figures as there are entries.
 # Now let's pick a few genes of interest to plot.
 genes <- c("Gm13698", "Gm13691", "Gm9045", "Pgk1-rs7", "Firre", "Neurod1")
 gene_values <- filtered_res_df %>%
-  filter(gene_name %in% genes)
+  filter(gene_name %in% genes) #look at gene name and match to "genes" list
 
 # Now the plotting beings
 ggplot(gene_values, 
@@ -88,10 +88,17 @@ gene_values <- filtered_res_df %>%
 ggplot(gene_values, 
        aes(x = log2FoldChange, y = padj )) +
   facet_grid(gene_name ~ result_name) + 
-  geom_point()
+  geom_point()  #FAVORITE GRAPH FOR THIS INFO
 
 # NICE !
 
+gene_values2 <- res_df %>%
+  filter(gene_name %in% genes)
+
+ggplot(gene_values2, 
+       aes(x = log2FoldChange, y = padj )) +
+  facet_grid(gene_name ~ result_name) + 
+  geom_point()
 ```
 
 # DEEPER INTO FACET: we can add some parameters to order the plots
@@ -125,7 +132,7 @@ We can just add it in the "Coordinates layer"
 # let's make the coordinates polar instead of cartesian
 ggplot(filtered_res_df, aes(x = result_name)) +
   geom_bar() +
-  coord_polar()
+  coord_polar() 
 
 # the values eminate from the center and are a "bar_plot" from the center.
 # we can easily see as we did above that 24 and 48 hours had biggest change
@@ -215,7 +222,7 @@ Check out the file in "util/plot_theme.R"
 It's an rscript that we source and then get all the parameters
 ```{r custom theme paperwhite}
 
-source("../../util/plot_theme.R")
+source("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/util/plot_theme.R")
 
 ggplot(filtered_res_df, aes(pvalue, padj)) +
   geom_point() +
