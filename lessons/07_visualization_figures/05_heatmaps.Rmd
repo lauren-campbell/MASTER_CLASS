@@ -36,10 +36,10 @@ First let's load the data
 ```{r Loading data}
 
 # load TPM RESULTS: 
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_results/TPM_results.Rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/works/TPM_results/TPM_results.Rdata")
 
 # laod DESEQ2 results
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/works/counts_results_DESEQ/DESEQ_results.rdata")
 
 ```
 
@@ -192,7 +192,7 @@ breaks <- seq(-2, 2, length.out = 51)
 pheatmap(sig_log_tpm_matrix, 
          cluster_rows = TRUE,  
          cluster_cols = TRUE,  
-         scale = "row",        
+         scale = "row", #This averages the row, but you'd want to normalize it to the 0 time point        
          show_rownames = FALSE, 
          show_colnames = TRUE,  
          color = colorRampPalette(c("blue", "white", "red"))(50), # Apply the custom color palette

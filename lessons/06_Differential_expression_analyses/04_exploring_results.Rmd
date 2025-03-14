@@ -110,6 +110,8 @@ write.table(dox_genes["gene_name"], row.names = FALSE, col.names = FALSE, "resul
 # copy and paste into EnrichR 
 #https://maayanlab.cloud/Enrichr/
 
+read.csv("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/laca6459/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/gene_names.csv")
+
 ```
 
 # let's take a look at base mean distribution of our sig genes

@@ -160,7 +160,8 @@ view(res_df)
   sum(is.na(res_df$padj))
   
   # If we do want to clear them out:
-  # NoNA <- complete.cases(res_df)
+  # 
+NoNA <- complete.cases(res_df)
 
 ```
 
