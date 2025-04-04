@@ -13,6 +13,7 @@ options(stringsAsFactors = F)
 library(GenomicRanges)
 # library(Gviz)
 library(IRanges)
+library(tidyverse)
 
 ```
 
@@ -48,7 +49,7 @@ If not in class please download Gencode annotations gtf here : https://ftp.ebi.a
 
 gencode_gr <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/GENOMES/M25/gencode.vM25.annotation.gtf")
 
-# let's take a look @metadata to see what we have in here
+# Let's take a look @metadata to see what we have in here
 
 ```
 
@@ -59,9 +60,7 @@ Now let's look at the gene_id indexable part of this GRanges
 ?seqnames
   
 seqnames(gencode_gr) %>% 
-  head()
-
-# we can see that "levels" are the chromosome names and are a meta-level
+  head() # View the "levels" = the chromosome names and are a meta-level
 
 # Note ChrM !
 ```
@@ -71,15 +70,13 @@ let's get more info with table to summary using tidy verse %>%
 ```{R summary/table GRanges}
 
 table(seqnames(gencode_gr)) %>%
-  head()
-# This is telling us how many features are associated with each chromosome.
+  head() # This is telling us how many features are associated with each chromosome.
 
 table(seqnames(gencode_gr)) %>% 
-  summary()
-# this tells us how many features there are in the genome.
+  summary() #Tells how many features are in the genome
 
 # Let's find out how many features the mitochondrial chr has (22th level - mouse (20) has less chromosomes than humans (23)
-table(seqnames(gencode_gr))[22] 
+table(seqnames(gencode_gr))[22] #Look at the table, based on the sequence, chromosome = 22 (22th layer = mitochondrial)
 
 # we see this is the mitochondrial chromosome and has 153 elements
 
@@ -133,6 +130,8 @@ gencode_gr_length <- data.frame("gene_id" = gencode_gr@elementMetadata$gene_id,
                            "start" = gencode_gr@ranges@start,
                            "width" = gencode_gr@ranges@width,
                            "chr" = gencode_gr@seqnames)
+
+table(gencode_gr_length$gene_type)
                            
 ```
 
