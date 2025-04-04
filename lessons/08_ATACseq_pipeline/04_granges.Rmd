@@ -23,42 +23,38 @@ Let's get started !
 # Genomic Ranges (Granges)
 ```{R GRanges}
 
-# Let's create a GRange using IRange logic. What we need is:
-# Chromosome, Strand, Ranges
+# Let's create a GRange using IRange logic. What we need is: Chromosome, Strand, Ranges
 
-gr <- GRanges(seqnames = c("chrX"), strand = c("+", "-", "*"), ranges = IRanges(start = c(1,200, 1000), end = c(30, 299, 1200)))
+gr <- GRanges(seqnames = c("chrX"), #Chromosome
+              strand = c("+", "-", "*"), #Strand
+              ranges = IRanges(start = c(1,200, 1000), end = c(30, 299, 1200))) #Ranges
 
-# let's see 
-gr
+gr #Let's see
 
 # the first thing to note is we see a unique identifier for the X chromosome as
 # 'seqnames'(similar to names above)
 # 'ranges' (same as Iranges)
 # 'strand' 
 
-# we can see all the information with seqinfo
-seqinfo(gr)
+seqinfo(gr) #Shows Information of Genomic Range
 
 # we can see some additional place holders we have not changed such as the 
-# genome version or if the chromosome is circular. Seqlenght is the lenght of 
-# the chromosome. let's add this stuff !
+# Genome version or if the chromosome is circular. 
+# Seqlenght = the length of chromosome. 
 
-seqlengths(gr) <- c("chrX" = 100000)
+#Adding Information!
+seqlengths(gr) <- c("chrX" = 100000) #Adding Length of chromosome
 seqinfo(gr)
 
-# accessing seq lengths:
-seqlengths(gr)
+seqlengths(gr) #Accessing seq lengths
 
-# we see that we only have one 'level' here for ChrX, let's add another chromosome
-seqlevels(gr) <- c("chrX", "chrY")
-seqlevels(gr)
-# now we can see that we have a level that contains both the X nad Y chromosome.
+# we see that we only have one 'level' here for ChrX
+seqlevels(gr) <- c("chrX", "chrY") #Add another chromosome
+seqlevels(gr) #Accessing levels (shows X & Y)
 
-
-# let's add genome:
+# Adding a Genome:
 genome(gr) <- c("mm10")
-gr
-# now we have a genome, chromosome and strand associated with each feature!
+gr # now we have a genome, chromosome and strand associated with each feature!
 
 ```
 
@@ -75,32 +71,30 @@ Let's find all the peaks that overlap between 0_KO_R1 and 0_KO_R2
 ```{R find overlaps}
 
 # setting file path to peak files mentioned above:
-peaks1 <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_KO_control_0_REP1.mLb.clN_peaks.broadPeak")
+peaks1 <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_KO_control_0_REP1.mLb.clN_peaks.broadPeak")
 
 
-peaks2 <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_WT_control_0_REP1.mLb.clN_peaks.broadPeak")
+peaks2 <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_WT_control_0_REP1.mLb.clN_peaks.broadPeak")
 
-peaks1 <- rtracklayer::import("<your_pipeline_output_dir>/bwa/merged_library/macs2/broad_peak/ESC_KO_control_0_REP1.mLb.clN_peaks.broadPeak")
+peaks1 <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_KO_control_0_REP1.mLb.clN_peaks.broadPeak")
 
-peaks2 <- rtracklayer::import("<your_pipeline_output_dir>/bwa/merged_library/macs2/broad_peak/ESC_WT_control_0_REP1.mLb.clN_peaks.broadPeak")
+peaks2 <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_WT_control_0_REP1.mLb.clN_peaks.broadPeak")
 # ESC_WT_control_0_REP1.mLb.clN_peaks.broadPeak
 
 
-# let's take a look:
-peaks1
+peaks1 #View
 
 # for reference to last class looking at this file
-peaks_1_tsv <- read_tsv(file.path(basepath,path, "POLR2A_R1_peaks.broadPeak"), colnames = F)
+peaks_1_tsv <- read_tsv(file.path(basepath,path, "POLR2A_R1_peaks.broadPeak"), colnames = F) #Basepath,path, can be used to consolidate the file path **CON:: hard to debug if something went wrong
 
-# now we can use the findOverlaps function to see what overlaps!
-?findOverlaps
+?findOverlaps #See what overlaps
 ?import
 
 ovf <- findOverlaps(peaks1, peaks2)
 
-length(peaks1)
-length(peaks2)
-length(ovf)
+length(peaks1) # 82,184 peaks
+length(peaks2) # 67,549 peaks
+length(ovf) # 54,170 overlap between replicate peak 1 and 2
 
 ```
 # NOTE: the first file is query and second is the subject. 
@@ -119,6 +113,8 @@ summary(peaks2)
 # the subject and query.
 ```
 
+*** TO PREVENT INCORRECT INTERPRETATION, SWITCH THE TO AND FROM AND SELECT THE SMALLEST OVERLAP, ***
+  IF peak1 wider than peak2 --> multiple overalps will occur
 
 # Why this could matter !
 Thought exercise with real data 
