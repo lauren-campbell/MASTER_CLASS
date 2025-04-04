@@ -108,7 +108,7 @@ ir3 <- c(ir1, ir2)
 ir3
 
 # nice we have our 'data set' nicely labeled and organized.
-
+?
 ```
 If you want to plot these you can look here for good code
 Not really essential but good thought practice and plotting practice.
@@ -117,17 +117,20 @@ https://stackoverflow.com/questions/21506724/how-to-plot-overlapping-ranges-with
 
 # finding overlaps in iranges
 ```{R overlaps in Iranges}
-# first let's use union to "merge" peaks.
+# First let's use union to "merge" peaks.
 # Remaking range 1 since we changed above
 
 ir1 <- IRanges(start = c(1,200, 1000), end = c(30, 299, 1200))
 ir2 <- IRanges(start = c(17,100, 1100), end = c(49, 199, 1201))
 
-# union (Iranges function) 
-# note: forces the union even if not overlapping!
+# Union (IRanges function) = forces the union even if not overlapping!
 ov1 <- union(ir1, ir2)
 ir1
 ir2
+
+#Union is very common in multiple packages so use 
+ov1 <- IRanges::union(ir1, ir2)
+
 # example: 1 is "union" with 17 and is 49 long
 # example: 200 and 100 are forced to overlap and length of 200 etc
 
